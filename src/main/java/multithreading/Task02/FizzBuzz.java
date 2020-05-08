@@ -1,32 +1,31 @@
 package multithreading.Task02;
 
-public class FizzBuzz {
-    int n;
+import java.util.function.IntConsumer;
+
+class FizzBuzz {
+    private int n;
 
     public FizzBuzz(int n) {
         this.n = n;
     }
 
-    public void fizz() {
-        if (this.n % 3 == 0) {
-            System.out.print("fizz");
-        }
+    // printFizz.run() outputs "fizz".
+    public void fizz(Runnable printFizz) throws InterruptedException {
+
     }
 
-    public void buzz() {
-        if (this.n % 5 == 0) {
-            System.out.print("buzz");
-        }
+    // printBuzz.run() outputs "buzz".
+    public void buzz(Runnable printBuzz) throws InterruptedException {
+
     }
 
-    public void fizzBuzz() {
-        if (this.n % 3 == 0 &&
-                this.n % 5 == 0) {
-            System.out.print("fizzbuzz");
-        }
+    // printFizzBuzz.run() outputs "fizzbuzz".
+    public void fizzbuzz(Runnable printFizzBuzz) throws InterruptedException {
+
     }
 
-    public void number() {
-        System.out.print(n);
+    // printNumber.accept(x) outputs "x", where x is an integer.
+    public void number(IntConsumer printNumber) throws InterruptedException {
+
     }
 }
