@@ -30,6 +30,7 @@
  */
 package org.sample;
 
+import multithreading.Task01.Foo;
 import org.openjdk.jcstress.annotations.*;
 import org.openjdk.jcstress.infra.results.II_Result;
 
@@ -37,24 +38,31 @@ import org.openjdk.jcstress.infra.results.II_Result;
 
 @JCStressTest
 // Outline the outcomes here. The default outcome is provided, you need to remove it:
-@Outcome(id = "0, 0", expect = Expect.ACCEPTABLE, desc = "Default correct outcome.")
-@Outcome(id = "1, 0", expect = Expect.FORBIDDEN, desc = "Default wrong outcome.")
+@Outcome(id = "0, 0", expect = Expect.FORBIDDEN, desc = "Default correct outcome.")
+@Outcome(id = "1, 0", expect = Expect.ACCEPTABLE, desc = "Default wrong outcome.")
+@Outcome(id = "0, 1", expect = Expect.ACCEPTABLE, desc = "Default wrong outcome.")
+@Outcome(id = "1, 1", expect = Expect.ACCEPTABLE, desc = "Default wrong outcome.")
 @State
 public class ConcurrencyTest {
-    int x, y;
+    volatile int x, y;
+    Foo foo = new Foo();
 
     @Actor
     public void actor1(II_Result r) {
-        x = 1;
-        r.r2 = y;
+        foo.first();
+        r.r1 = foo.a;
+
+//        x = 1;
+//        r.r1 = y;
         // Put the code for first thread here
     }
 
     @Actor
     public void actor2(II_Result r) {
-        y = 1;
-        r.r1 = x;
+        foo.second();
+        r.r1 = foo.a;
+//        y = 1;
+//        r.r2 = x;
         // Put the code for second thread here
     }
-
 }
