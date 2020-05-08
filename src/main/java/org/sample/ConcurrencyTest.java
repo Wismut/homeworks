@@ -50,7 +50,6 @@ public class ConcurrencyTest {
     @Actor
     public void actor1(II_Result r) {
         foo.first();
-        r.r1 = foo.a;
 
 //        x = 1;
 //        r.r1 = y;
@@ -60,7 +59,6 @@ public class ConcurrencyTest {
     @Actor
     public void actor2(II_Result r) {
         foo.second();
-        r.r1 = foo.a;
 //        y = 1;
 //        r.r2 = x;
         // Put the code for second thread here
