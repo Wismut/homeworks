@@ -3,14 +3,11 @@ package multithreading.Task02;
 import java.util.function.IntConsumer;
 
 public class Runner {
-    static boolean isNeedToCallThreadA = false;
-    static boolean isNeedToCallThreadB;
-    static boolean isNeedToCallThreadC;
-    static boolean isNeedToCallThreadD;
     static Thread threadA;
     static Thread threadB;
     static Thread threadC;
     static Thread threadD;
+    volatile int i;
 
     public static void main(String[] args) throws InterruptedException {
         FizzBuzz fizzBuzz = new FizzBuzz(15);
@@ -32,20 +29,15 @@ public class Runner {
     }
 
     private void executingTasks(FizzBuzz fizzBuzz) throws InterruptedException {
-        for (int i = 1; i <= fizzBuzz.getN(); i++) {
+        for (i = 1; i <= fizzBuzz.getN(); i++) {
             if (i % 15 == 0) {
                 threadC.interrupt();
-                isNeedToCallThreadC = true;
                 Thread.sleep(1000);
-//                    monitorC.notify();
             } else if (i % 3 == 0) {
                 threadA.interrupt();
-                isNeedToCallThreadA = true;
                 Thread.sleep(1000);
-//                    monitorA.notify();
             } else if (i % 5 == 0) {
                 threadB.interrupt();
-                isNeedToCallThreadB = true;
                 Thread.sleep(1000);
 //                    monitorB.notify();
             } else {
@@ -79,7 +71,6 @@ class FizzRunnable implements Runnable {
                 } catch (InterruptedException e1) {
 //                    e1.printStackTrace();
                 }
-//                e.printStackTrace();
             }
         }
     }
@@ -102,7 +93,7 @@ class BuzzRunnable implements Runnable {
                 wait();
             } catch (InterruptedException e) {
                 try {
-                    fizzBuzz.fizz(buzzRunnable);
+                    fizzBuzz.buzz(buzzRunnable);
                 } catch (InterruptedException e1) {
 //                    e1.printStackTrace();
                 }
@@ -125,15 +116,13 @@ class FizzBuzzRunnable implements Runnable {
     public synchronized void run() {
         while (true) {
             try {
-//                Runner.isNeedToCallThreadD = false;
                 wait();
             } catch (InterruptedException e) {
                 try {
-                    fizzBuzz.fizz(fizzBuzzRunnable);
+                    fizzBuzz.fizzbuzz(fizzBuzzRunnable);
                 } catch (InterruptedException e1) {
-//                    e1.printStackTrace();
+
                 }
-//                e.printStackTrace();
             }
         }
     }
@@ -152,15 +141,13 @@ class PrintNumberRunnable implements Runnable {
     public synchronized void run() {
         while (true) {
             try {
-                Runner.isNeedToCallThreadD = false;
                 wait();
             } catch (InterruptedException e) {
                 try {
                     fizzBuzz.number(consumer);
                 } catch (InterruptedException e1) {
-//                    e1.printStackTrace();
+
                 }
-//                e.printStackTrace();
             }
         }
     }
