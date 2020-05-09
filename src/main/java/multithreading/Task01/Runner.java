@@ -7,10 +7,8 @@ public class Runner {
         Thread threadA = new Thread(foo::first);
         Thread threadB = new Thread(foo::second);
         Thread threadC = new Thread(foo::third);
-        threadA.start();
-        threadA.join();
-        threadB.start();
-        threadB.join();
         threadC.start();
+        threadA.start();
+        threadB.start();
     }
 }

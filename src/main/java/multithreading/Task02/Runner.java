@@ -1,5 +1,9 @@
 package multithreading.Task02;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.function.IntConsumer;
 
 public class Runner {
@@ -8,7 +12,10 @@ public class Runner {
         Runnable fizzRunnable = () -> System.out.print("fizz ");
         Runnable buzzRunnable = () -> System.out.print("buzz ");
         Runnable fizzBuzzRunnable = () -> System.out.print("fizzbuzz ");
-        IntConsumer numberConsumer = n -> System.out.print(n + " ");;
+        IntConsumer numberConsumer = n -> System.out.print(n + " ");
+        ForkJoinPool forkJoinPool = new ForkJoinPool(4);
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        forkJoinPool.getFactory().newThread(forkJoinPool).start();
         Thread threadA = new Thread(() -> {
             try {
                 fizzBuzz.fizz(fizzRunnable);
