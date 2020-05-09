@@ -12,12 +12,16 @@ public class Runner {
         Runnable fizzBuzzRunnable = () -> System.out.print("fizzbuzz ");
         IntConsumer numberConsumer = n -> System.out.print(n + " ");
         Thread threadA = new Thread(new FizzRunnable(fizzBuzz, fizzRunnable));
-        Thread threadB = new Thread(new BuzzRunnable(fizzBuzz, buzzRunnable));
-        Thread threadC = new Thread(new FizzBuzzRunnable(fizzBuzz, fizzBuzzRunnable));
-        Thread threadD = new Thread(new PrintNumberRunnable(fizzBuzz, numberConsumer));
+        threadA.setDaemon(true);
         threadA.start();
+        Thread threadB = new Thread(new BuzzRunnable(fizzBuzz, buzzRunnable));
+        threadB.setDaemon(true);
         threadB.start();
+        Thread threadC = new Thread(new FizzBuzzRunnable(fizzBuzz, fizzBuzzRunnable));
+        threadC.setDaemon(true);
         threadC.start();
+        Thread threadD = new Thread(new PrintNumberRunnable(fizzBuzz, numberConsumer));
+        threadD.setDaemon(true);
         threadD.start();
         executingTasks(fizzBuzz, threadA, threadB, threadC, threadD);
     }
