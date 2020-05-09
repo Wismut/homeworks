@@ -3,11 +3,7 @@ package multithreading.Task02;
 import java.util.function.IntConsumer;
 
 public class Runner {
-    static Thread threadA;
-    static Thread threadB;
-    static Thread threadC;
-    static Thread threadD;
-    volatile int i;
+    static int i;
 
     public static void main(String[] args) throws InterruptedException {
         FizzBuzz fizzBuzz = new FizzBuzz(15);
@@ -15,36 +11,35 @@ public class Runner {
         Runnable buzzRunnable = () -> System.out.print("buzz ");
         Runnable fizzBuzzRunnable = () -> System.out.print("fizzbuzz ");
         IntConsumer numberConsumer = n -> System.out.print(n + " ");
-        threadA = new Thread(new FizzRunnable(fizzBuzz, fizzRunnable));
-        threadB = new Thread(new BuzzRunnable(fizzBuzz, buzzRunnable));
-        threadC = new Thread(new FizzBuzzRunnable(fizzBuzz, fizzBuzzRunnable));
-        threadD = new Thread(new PrintNumberRunnable(fizzBuzz, numberConsumer));
+        Thread threadA = new Thread(new FizzRunnable(fizzBuzz, fizzRunnable));
+        Thread threadB = new Thread(new BuzzRunnable(fizzBuzz, buzzRunnable));
+        Thread threadC = new Thread(new FizzBuzzRunnable(fizzBuzz, fizzBuzzRunnable));
+        Thread threadD = new Thread(new PrintNumberRunnable(fizzBuzz, numberConsumer));
         threadA.start();
         threadB.start();
         threadC.start();
         threadD.start();
-        synchronized (Runner.class) {
-            new Runner().executingTasks(fizzBuzz);
-        }
+        executingTasks(fizzBuzz, threadA, threadB, threadC, threadD);
     }
 
-    private void executingTasks(FizzBuzz fizzBuzz) throws InterruptedException {
+    private static void executingTasks(FizzBuzz fizzBuzz,
+                                       Thread threadA,
+                                       Thread threadB,
+                                       Thread threadC,
+                                       Thread threadD) throws InterruptedException {
         for (i = 1; i <= fizzBuzz.getN(); i++) {
             if (i % 15 == 0) {
                 threadC.interrupt();
-                Thread.sleep(1000);
+                Thread.sleep(200);
             } else if (i % 3 == 0) {
                 threadA.interrupt();
-                Thread.sleep(1000);
+                Thread.sleep(200);
             } else if (i % 5 == 0) {
                 threadB.interrupt();
-                Thread.sleep(1000);
-//                    monitorB.notify();
+                Thread.sleep(200);
             } else {
                 threadD.interrupt();
-//                isNeedToCallThreadD = true;
-                Thread.sleep(1000);
-//                    monitorD.notify();
+                Thread.sleep(200);
             }
         }
     }
@@ -63,13 +58,12 @@ class FizzRunnable implements Runnable {
     public synchronized void run() {
         while (true) {
             try {
-//                Runner.isNeedToCallThreadD = false;
                 wait();
             } catch (InterruptedException e) {
                 try {
                     fizzBuzz.fizz(fizzRunnable);
                 } catch (InterruptedException e1) {
-//                    e1.printStackTrace();
+
                 }
             }
         }
@@ -89,15 +83,13 @@ class BuzzRunnable implements Runnable {
     public synchronized void run() {
         while (true) {
             try {
-//                Runner.isNeedToCallThreadD = false;
                 wait();
             } catch (InterruptedException e) {
                 try {
                     fizzBuzz.buzz(buzzRunnable);
                 } catch (InterruptedException e1) {
-//                    e1.printStackTrace();
+
                 }
-//                e.printStackTrace();
             }
         }
     }

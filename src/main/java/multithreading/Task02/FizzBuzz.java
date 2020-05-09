@@ -9,24 +9,20 @@ class FizzBuzz {
         this.n = n;
     }
 
-    // printFizz.run() outputs "fizz".
     public void fizz(Runnable printFizz) throws InterruptedException {
         printFizz.run();
     }
 
-    // printBuzz.run() outputs "buzz".
     public void buzz(Runnable printBuzz) throws InterruptedException {
         printBuzz.run();
     }
 
-    // printFizzBuzz.run() outputs "fizzbuzz".
     public void fizzbuzz(Runnable printFizzBuzz) throws InterruptedException {
         printFizzBuzz.run();
     }
 
-    // printNumber.accept(x) outputs "x", where x is an integer.
     public void number(IntConsumer printNumber) throws InterruptedException {
-        printNumber.accept(n);
+        printNumber.accept(Runner.i);
     }
 
     public int getN() {
