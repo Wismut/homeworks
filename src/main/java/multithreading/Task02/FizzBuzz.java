@@ -28,4 +28,8 @@ class FizzBuzz {
     public void number(IntConsumer printNumber) throws InterruptedException {
         printNumber.accept(n);
     }
+
+    public int getN() {
+        return n;
+    }
 }
